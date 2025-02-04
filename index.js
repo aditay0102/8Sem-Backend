@@ -2,25 +2,23 @@ import express from 'express';
 import cors from 'cors';
 const PORT = 5000;
 
-import {connectToDB} from './database.js';
+import { connectToDB } from './database.js';
 import userRoute from './routes/user.js';
 import user from './models/user.js';
-
-import bodyParser from 'body-parser';
-
-
+import cookieParser from 'cookie-parser';
+import multer from 'multer';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(express.static('public'));
 
-app.use('/test',userRoute);
+app.use('/test', userRoute);
 
-app.listen(PORT,() => {
+app.listen(PORT, () => {
     connectToDB();
-    console.log(`Server is running onn port ${PORT}`)
-    
-})
-
+    console.log(`Server is running on port ${PORT}`);
+});

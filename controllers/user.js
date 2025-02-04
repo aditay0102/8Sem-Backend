@@ -1,4 +1,9 @@
-import User from '../models/user.js'
+
+import User from '../models/user.js';
+import bcrypt from 'bcrypt';
+import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
+
 
 async function handleUserSignup(req,res) {
     
@@ -6,17 +11,22 @@ async function handleUserSignup(req,res) {
     const email = req.body.email
     const password = req.body.password
 
+    
+    
+    
     if(!name){
         return res.status(400).send("name is required");
     }
-
+    
     if(!email){
         return res.status(400).send("email is required");
     }
-
+    
     if(!password){
         return res.status(400).send("password is required");
     }
+
+    const hashedPassword  = await bcrypt.hash(password,10);
 
     let user = await  User.findOne({email: email});
 
@@ -28,7 +38,7 @@ async function handleUserSignup(req,res) {
             const user = new User({
                 name: name,
                 email: email,
-                password: password
+                password: hashedPassword
             })
             
             await user.save()
@@ -53,10 +63,22 @@ async function handleUserSignIn(req,res) {
     const user = await User.findOne({email});
 
     if(user){
-        const Password = await User.findOne({password});
+       
+        const match = await bcrypt.compare(password,user.password);
+        const  accessToken = jwt.sign(JSON.stringify(user),process.env.TOKEN_SECRET)
 
-        if(Password){
-            res.status(200).send("success fully logged in");
+
+        if(match){
+            //res.status(200).send({ accessToken: accessToken });
+
+            return res
+            .cookie("access_toekn", accessToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+            })
+            .status(200)
+            .json({accessToken,success : "true"});
+
         }
         else{
             res.status(400).send("password is wrong enter correct password");
@@ -71,11 +93,25 @@ async function handleUserSignIn(req,res) {
    
 }
 
+async function authentication(req,res) {
+    let token = req.header('Authorization');
+    if (!token) {
+        return res.sendStatus(403);
+    }
+    try {
+        return res.status(200).send("success");
+    } catch {
+        return res.sendStatus(403).send("somethig is wrong");
+    }
+    
+}
+
 async function test(req,res){
 
     res.send("working");
 }
 
 export {handleUserSignup,test,
-    handleUserSignIn
+    handleUserSignIn,
+    authentication
 };
