@@ -3,16 +3,29 @@ import mongoose from 'mongoose';
 
 const complaintSchema = new mongoose.Schema(
     {
-        title: {
+        userName:{
             type: String,
-            required: true
+        },
+        userEmail:{
+            type: String,
+        },
+        userId:{
+            type: String,
+        },
+        title:{
+            type: String,
+            
         },
         description:{
             type: String,
-            required: true
+           
+        },
+        img:{
+            type:String,
         },
         status:{
-            default: sent
+            type: String,
+            default: "send"
         },
         createdAt: {
             type: Date,
@@ -23,3 +36,5 @@ const complaintSchema = new mongoose.Schema(
 
     }
 )
+
+export default mongoose.model("Complaint",complaintSchema);

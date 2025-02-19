@@ -42,7 +42,7 @@ async function handleUserSignup(req,res) {
             })
             
             await user.save()
-            return res.status(201).json(user)
+            return res.status(201).json({user,success : "true"})
 
         }
         catch(err){
@@ -70,14 +70,16 @@ async function handleUserSignIn(req,res) {
 
         if(match){
             //res.status(200).send({ accessToken: accessToken });
-
+           
             return res
-            .cookie("access_toekn", accessToken, {
+            .cookie("access_toekn",accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
             })
             .status(200)
-            .json({accessToken,success : "true"});
+            .json({accessToken,success : "true",
+                user
+            });
 
         }
         else{
@@ -86,7 +88,7 @@ async function handleUserSignIn(req,res) {
     }
     else{
         
-        res.status(400).send("user doesn't exist please Sign up")
+        res.status(400).json({succes: "false"})
     }
 
 
