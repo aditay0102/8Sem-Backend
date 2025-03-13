@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
-app.use('images',express.static('uploads'));
+app.use('/images',express.static('uploads'));
 app.use('/test', userRoute);
 
 app.listen(PORT, () => {

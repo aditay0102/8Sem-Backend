@@ -87,9 +87,7 @@ async function editComplaint(req, res) {
   if (!description) {
     return res.status(400).send("description is required");
   }
-  if (!id) {
-    return res.status(400).send("complaintId is required");
-  }
+  
 
   try {
     const complaint = await Complaint.findById(id);
@@ -107,13 +105,11 @@ async function editComplaint(req, res) {
 
     await complaint.save();
 
-    res.status(200).send(complaint);
+    res.status(200).send({success: true});
   } catch (error) {
     res.status(500).send("An error occurred while updating the complaint");
   }
 }
-
-
 
 
 async function deleteComplaint(req, res) {
@@ -146,20 +142,11 @@ async function deleteComplaint(req, res) {
   // delete complaint from user array 
   const index = myArray.indexOf(id);
   const x = myArray.splice(index, 1);
-  console.log(`myArray values: ${myArray}`);
-  console.log(`variable x value: ${x}`);
+  
   user.complaint = myArray
 
   user.save();
-
-
   return res.status(200).send({success: true});
-
-
-
-  
-  
-  
 }
 
 

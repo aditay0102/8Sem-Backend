@@ -95,17 +95,17 @@ async function handleUserSignIn(req,res) {
    
 }
 
-async function authentication(req,res) {
-    let token = req.header('Authorization');
-    if (!token) {
-        return res.sendStatus(403);
-    }
-    try {
-        return res.status(200).send("success");
-    } catch {
-        return res.sendStatus(403).send("somethig is wrong");
-    }
-    
+async function authentication(req,res,next) {
+    const token = req.headers['authorization'];
+  
+    // If token is not provided, return an error
+    if (!token) return res.sendStatus(401);
+  
+    // Verify token
+    jwt.verify(token, process.env.TOKEN_SECRET, (err) => {
+      if (err) return res.sendStatus(403);
+      next();
+    })
 }
 
 async function test(req,res){
