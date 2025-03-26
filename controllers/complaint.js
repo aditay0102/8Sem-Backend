@@ -1,5 +1,6 @@
 import Complaint from "../models/comlplaint.js";
 import User from '../models/user.js';
+import Message from '../models/message.js';
 
 async function getAllComplaints(req,res){
   const {userId} = req.params
@@ -10,13 +11,13 @@ async function getAllComplaints(req,res){
 
  // let userId = id;
    const result = await Complaint.find({userId});
-
+   const chats = await Message.find({room: userId})
   
   if(!result){
     return res.status(400).send('no result');
   }
 
-  return res.status(200).send(result);
+  return res.status(200).send({result,chats});
 
 }
 
@@ -81,15 +82,16 @@ async function editComplaint(req, res) {
   }
   */
  
-  if (!title) {
+  if (!title )  {
+    //console.log(title.length);
     return res.status(400).send("title is required");
   }
   if (!description) {
-    return res.status(400).send("description is required");
+    return res.status(200).send("description is required");
   }
   
 
-  try {
+  
     const complaint = await Complaint.findById(id);
     if (!complaint) {
       return res.status(404).send("Complaint not found");
@@ -106,9 +108,7 @@ async function editComplaint(req, res) {
     await complaint.save();
 
     res.status(200).send({success: true});
-  } catch (error) {
-    res.status(500).send("An error occurred while updating the complaint");
-  }
+  
 }
 
 
