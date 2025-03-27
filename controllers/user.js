@@ -57,13 +57,13 @@ async function handleUserSignIn(req,res) {
     const {email,password} = req.body;
 
     if(!email){
-        res.status(400).send("email is required");
+        return res.status(400).send("email is required");
     }
 
     const user = await User.findOne({email});
 
     if(user){
-       
+        if(!password) return res.status(400).json({success: "false", message: "password is required"});
         const match = await bcrypt.compare(password,user.password);
         const  accessToken = jwt.sign(JSON.stringify(user),process.env.TOKEN_SECRET)
 
@@ -83,12 +83,12 @@ async function handleUserSignIn(req,res) {
 
         }
         else{
-            res.status(400).send("password is wrong enter correct password");
+            res.status(400).send({success: "false",message: "wrong password"});
         }
     }
     else{
         
-        res.status(400).json({succes: "false"})
+        res.status(400).send({succes: "false",message:"user not found"})
     }
 
 

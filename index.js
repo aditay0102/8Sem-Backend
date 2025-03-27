@@ -21,7 +21,7 @@ const server = http.createServer(app);
 // Initialize socket.io
 const io = new Server(server, {
     cors: {
-        origin: '*', // Replace with your frontend's domain for production
+        origin: 'https://8-sem-frontend.vercel.app/', // Replace with your frontend's domain for production
     }
 });
 
