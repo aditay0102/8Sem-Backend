@@ -3,7 +3,7 @@ import cors from 'cors';
 import { Server } from 'socket.io';
 import http from 'http';
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 import { connectToDB } from './database.js';
 import userRoute from './routes/user.js';

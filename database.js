@@ -1,11 +1,12 @@
 import mongoose, { mongo } from "mongoose";
 import 'dotenv/config'
 
-const mongodb = process.env.mongodb;
+const uri = String(process.env.mongodb);
 
 function connectToDB(){
-    mongoose.connect(mongodb)
+    mongoose.connect(uri)
     try{
+        console.log(mongodb);
      console.log("database connected");
         
 
