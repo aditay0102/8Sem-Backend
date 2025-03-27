@@ -4,6 +4,6 @@ const router = express.Router();
 
 
 router.get('/AllComplaints',handleAllComplaints);
-router.put('/updateStatusComplaints/:id',handleStatus);
+router.put('/updateStatusComplaints/:id',roleMiddleware,handleStatus);
 
 export default router;

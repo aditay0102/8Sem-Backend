@@ -42,7 +42,7 @@ const roleMiddleware = (req, res, next) => {
     if (role === '1') {
         next(); // Continue to the next middleware or route handler
     } else {
-        res.status(403).send('Forbidden: Incorrect role');
+        res.send({success : 'false'});
     }
 };
 
