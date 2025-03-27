@@ -6,7 +6,7 @@ const uri = String(process.env.mongodb);
 function connectToDB(){
     mongoose.connect(uri)
     try{
-        console.log(mongodb);
+       
      console.log("database connected");
         
 
