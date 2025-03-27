@@ -35,6 +35,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 app.use('/images', express.static('uploads')); // images uploads are public
+
+app.get('/', (req, res) => {
+    res.send('working');
+});
 app.use('/test', userRoute);
 app.use('/test', adminRoute);
 
