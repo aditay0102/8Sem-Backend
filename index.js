@@ -22,7 +22,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
     
     cors: {
-        origin:  ['https://8-sem-frontend.vercel.app/', 'http://localhost:3000'] ,  // Replace with your frontend's domain for production
+        origin:  ['https://8-sem-frontend.vercel.app/', 'http://localhost:3000','https://eightsem-backend.onrender.com'] ,  // Replace with your frontend's domain for production
     }
 });
 
